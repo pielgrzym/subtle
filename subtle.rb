@@ -345,6 +345,10 @@ tag "terms" do
   resize   true
 end
 
+tag "project" do
+  match :instance => "project"
+end
+
 tag "scratchpad" do
   match :instance => "scratch"
   gravity :scratch
@@ -475,17 +479,16 @@ end
 # }}}
 
 # Views {{{
-if "mockra" == host or "proteus" == host
-  www_re    = "browser|one25|three25"
-  test_re   = "xeph[0-9]+|android|three25"
-  editor_re = "editor|one25|three25"
-  icons     = true
-else
-  www_re    = "browser"
-  test_re   = "android|xeph[0-9]+|eight|one$|test"
-  editor_re = "editor"
-  icons     = true
-end
+# if "mockra" == host or "proteus" == host
+#   www_re    = "browser|one25|three25"
+#   project_re = "project"
+#   editor_re = "editor|one25|three25"
+#   icons     = true
+# else
+www_re    = "browser"
+project_re = "project"
+editor_re = "editor"
+icons     = true
 
 iconpath = "#{ENV["HOME"]}/.local/share/icons"
 
@@ -497,7 +500,7 @@ space = {
   :www     => Subtlext::Icon.new("#{iconpath}/invader2.xbm"),
   :void    => Subtlext::Icon.new("#{iconpath}/invader3.xbm"),
   :sketch  => Subtlext::Icon.new("#{iconpath}/invader4.xbm"),
-  :test    => Subtlext::Icon.new("#{iconpath}/invader5.xbm"),
+  :project    => Subtlext::Icon.new("#{iconpath}/invader5.xbm"),
   :editor  => Subtlext::Icon.new("#{iconpath}/invader6.xbm")
 }
 
@@ -529,8 +532,8 @@ view "sketch" do
   icon_only icons
 end
 
-view "test" do
-  match     test_re
+view "project" do
+  match     project_re
   #icon      "#{iconpath}/bug.xbm"
   icon      Subtlext::Icon.new("#{iconpath}/invader5.xbm")
   icon_only icons
