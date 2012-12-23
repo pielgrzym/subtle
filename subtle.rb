@@ -34,13 +34,13 @@ set :tiling,    false
 
 # Screens {{{
 screen 1 do
-  top     [:title, :spacer, :views, :center, :clock, :fuzzytime, :separator, :cpu, :sublets, :center]
+  top     [:title, :spacer, :center, :views, :center, :cpu, :sublets, :separator, :clock]
   bottom  []
   view    0
 end
 
 screen 2 do
-  top     [:mpd, :separator, :volume, :spacer, :tray, :title, :center, :views, :center]
+  top     [:title, :spacer, :tray, :center, :views, :center, :clock]
   bottom  []
   view    5
 end
