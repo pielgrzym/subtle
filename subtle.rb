@@ -7,6 +7,7 @@
 #
 
 require "socket"
+require "subtle/subtlext" 
 
 # Contrib {{{
 begin
@@ -24,12 +25,12 @@ rescue LoadError
 end # }}}
 
 # Options {{{
-set :step,      5
-set :snap,      10
-set :gravity,   :center
-set :urgent,    false
-set :resize,    false
-set :tiling,    false
+set :increase_step,      5
+set :border_snap,      10
+set :default_gravity,   :center
+set :urgent_dialogs,    false
+set :honor_size_hints,    false
+set :gravity_tiling,    false
 # }}}
 
 # Screens {{{
@@ -188,18 +189,17 @@ gravity :scratch,        [ 5, 0, 90, 60 ]
 host     = Socket.gethostname
 modkey   = "W"
 # gravkeys = [ "KP_7", "KP_8", "KP_9", "KP_4", "KP_5", "KP_6", "KP_1", "KP_2", "KP_3" ]
-gravkeys = [ "u", "i", "o", 
-             "j", "k", "l",
-             "m", "comma", "period" ]
+# gravkeys = [ "u", "k", "o", 
+#              "h", "i", "l",
+#              "m", "j", "period" ]
 
-# if "black" == host || "mockra" == host #< Netbooks
-#   gravkeys = [ "q", "w", "e", "a", "s", "d", "y", "x", "c" ]
+gravkeys = [ "q", "w", "e", "a", "s", "d", "z", "x", "c" ]
 # elsif "test" == host #< Usually VMs
 #   modkey = "A"
 # end
 
 # Views and screens
-(1..6).each do |i|
+(1..9).each do |i|
   grab modkey + "-#{i}",   "ViewSwitch#{i}".to_sym
   grab modkey + "-S-#{i}", "ViewJump#{i}".to_sym
 end
@@ -207,9 +207,33 @@ end
 grab modkey + "-i",  :ScreenJump2
 grab modkey + "-o",  :ScreenJump1
 grab modkey + "-v",  :ViewJump6
-grab modkey + "-comma", :ViewPrev
-grab modkey + "-period", :ViewNext
 
+grab modkey + "-period" do
+  vArr = Subtlext::View[:all];
+  cindx = vArr.index(Subtlext::View.current);
+
+  for i in 1..vArr.size do
+    cV = vArr[(i + cindx) % vArr.size];
+    if (!cV.clients.empty? && Subtlext::View.visible.index(cV) == nil) then
+      cV.jump;
+      break;
+    end
+  end
+end
+
+grab modkey + "-comma" do
+  vArr = Subtlext::View[:all].reverse;
+  cindx = vArr.index(Subtlext::View.current);
+
+  for i in 1..vArr.size do
+    cV = vArr[(i + cindx) % vArr.size];
+    if (!cV.clients.empty? && Subtlext::View.visible.index(cV) == nil) then
+      cV.jump;
+      break;
+    end
+  end
+end
+ 
 # Windows
 grab modkey + "-B1",      :WindowMove
 grab modkey + "-B3",      :WindowResize
@@ -254,7 +278,7 @@ gravities = [
   [:bottom_right, :bottom_right25, :bottom_right33, :bottom_right66, :bottom_right75, :bottom_right252]
 ]
 
-gravkey = 'A'
+gravkey = 'W'
 
 gravities.each_index do |i|
   # Set gravities
@@ -274,6 +298,7 @@ gravities.each_index do |i|
     end
 
     clients[idx].focus
+    clients[idx].raise
   }
 end
 
@@ -289,7 +314,41 @@ grab "XF86AudioLowerVolume", :VolumeLower
 # grab modkey + "-m", "mpc current | tr -d '\n' | xclip"
 
 # Programs
-grab modkey + "-Return", "urxvt"
+grab modkey + "-Return" do
+  if Subtlext::View.current.to_s == 'project'
+    spawn("urxvt -name project")
+  else
+    spawn("urxvt")
+  end
+end
+
+grab modkey + "-S-Return" do
+  spawn("urxvt -name project")
+end
+
+def jump_or_spawn name
+  view = Subtlext::View.first(name)
+  if view.clients.empty?
+    view.jump
+    yield
+  else
+    view.jump
+  end
+end
+
+grab "A-e" do
+  jump_or_spawn :editor do
+    c = spawn("gvim")
+    c.focus
+  end
+end
+
+grab "A-w" do 
+  jump_or_spawn :www do 
+    c = spawn("firefox")
+    c.focus
+  end
+end
 # grab modkey + "-f", "firefox -no-remote -ProfileManager"
 
 # Contrib
@@ -305,10 +364,12 @@ end
 grab "W-semicolon" do
   if((c = Subtlext::Client["scratch"]))
     c.toggle_stick
+    c.raise
     c.focus
   elsif((jc = spawn("urxvtc -name scratch")))
     c.tags  = [] 
     c.flags = [ :stick ]
+    c.raise
   end
 end
 
@@ -340,13 +401,13 @@ end
 
 # Tags {{{
 tag "terms" do
-  match    instance: "xterm|urxvt"
+  match    instance: "xterm|urxvt", name: '[^irssi]'
   gravity  :center
   resize   true
 end
 
 tag "project" do
-  match :instance => "project"
+  match instance: "project"
 end
 
 tag "scratchpad" do
@@ -358,22 +419,18 @@ end
 
 tag "browser" do
   match "navigator|(google\-)?chrom[e|ium]|firefox"
-  # if "proteus" == host
-  #   gravity :top75
-  # else
-  #   gravity :center
-  # end
+  gravity :center
 end
 
 tag "editor" do
   match  "[g]?vim"
-  resize true
+  # resize true
+  gravity :center
+end
 
-  # if "mockra" == host or "proteus" == host
-  #   gravity :top75
-  # else
-  #   gravity :center
-  # end
+tag "irc" do
+  match name: 'irssi'
+  gravity :center
 end
 
 tag "mplayer" do
@@ -395,48 +452,42 @@ tag "urgent" do
   float  true
 end
 
-tag "powerfolder" do
-  match "de-dal33t-powerfolder-PowerFolder"
-  float true
-  stick true
-end
-
 tag "dialogs" do
   match  "sun-awt-X11-XDialogPeer"
   match type: [ :dialog, :splash ]
   stick true
 end
 
-tag "one" do
-  match    "urxvt2"
-  gravity  :bottom_left
-end
-
-tag "one25" do
-  match    "urxvt2"
-  gravity  :bottom_left25
-end
-
-tag "two" do
-  match    "urxvt2"
-  gravity  :bottom
-end
-
-tag "three25" do
-  match    "urxvt1"
-  gravity  :bottom_right25
-end
-
-tag "seven" do
-  match    "urxvt1"
-  gravity  :top_left
-end
-
-tag "eight" do
-  match    "urxvt1"
-  gravity  :top
-end
-
+# tag "one" do
+#   match    "urxvt2"
+#   gravity  :bottom_left
+# end
+# 
+# tag "one25" do
+#   match    "urxvt2"
+#   gravity  :bottom_left25
+# end
+# 
+# tag "two" do
+#   match    "urxvt2"
+#   gravity  :bottom
+# end
+# 
+# tag "three25" do
+#   match    "urxvt1"
+#   gravity  :bottom_right25
+# end
+# 
+# tag "seven" do
+#   match    "urxvt1"
+#   gravity  :top_left
+# end
+# 
+# tag "eight" do
+#   match    "urxvt1"
+#   gravity  :top
+# end
+# 
 tag "gimp_image" do
   match    role: "gimp-image-window"
   gravity  :gimp_image
@@ -478,18 +529,7 @@ tag "xmessage" do
 end
 # }}}
 
-# Views {{{
-# if "mockra" == host or "proteus" == host
-#   www_re    = "browser|one25|three25"
-#   project_re = "project"
-#   editor_re = "editor|one25|three25"
-#   icons     = true
-# else
-www_re    = "browser"
-project_re = "project"
-editor_re = "editor"
 icons     = true
-
 iconpath = "#{ENV["HOME"]}/.local/share/icons"
 
 space = {
@@ -500,52 +540,65 @@ space = {
   :www     => Subtlext::Icon.new("#{iconpath}/invader2.xbm"),
   :void    => Subtlext::Icon.new("#{iconpath}/invader3.xbm"),
   :sketch  => Subtlext::Icon.new("#{iconpath}/invader4.xbm"),
-  :project    => Subtlext::Icon.new("#{iconpath}/invader5.xbm"),
+  :project => Subtlext::Icon.new("#{iconpath}/invader5.xbm"),
   :editor  => Subtlext::Icon.new("#{iconpath}/invader6.xbm")
 }
 
 view "terms" do
-  match     "terms|eight|two"
-  #icon      "#{iconpath}/terminal.xbm"
+  match     "terms"
   icon      Subtlext::Icon.new("#{iconpath}/cannon.xbm")
   icon_only icons
 end
 
 view "www" do
-  match     www_re
-  #icon      "#{iconpath}/world.xbm"
+  match     "browser"
   icon      Subtlext::Icon.new("#{iconpath}/ufo.xbm")
   icon_only icons
 end
 
-view "void" do
-  match     "default|void|powerfolder|pms"
-  #icon      "#{iconpath}/quote.xbm"
-  icon      Subtlext::Icon.new("#{iconpath}/invader3.xbm")
-  icon_only icons
-end
-
-view "sketch" do
-  match     "inkscape|dia_*|gimp_.*"
-  #icon      "#{iconpath}/paint.xbm"
-  icon      Subtlext::Icon.new("#{iconpath}/invader4.xbm")
-  icon_only icons
-end
-
 view "project" do
-  match     project_re
+  match     "project"
+  dynamic false
   #icon      "#{iconpath}/bug.xbm"
   icon      Subtlext::Icon.new("#{iconpath}/invader5.xbm")
   icon_only icons
 end
 
 view "editor" do
-  match     editor_re
+  match     "editor"
   #icon      "#{iconpath}/ruby.xbm"
   icon      Subtlext::Icon.new("#{iconpath}/invader6.xbm")
   icon_only icons
 end
 
+view "sketch" do
+  match     "inkscape|dia_*|gimp_.*"
+  icon      Subtlext::Icon.new("#{iconpath}/invader4.xbm")
+  icon_only icons
+  dynamic true
+end
+
+view "irc" do 
+  match "irc"
+  icon      Subtlext::Icon.new("#{iconpath}/invader1.xbm")
+  icon_only icons
+  dynamic true
+end
+
+view "simulacra" do
+  match "vbox"
+  icon      Subtlext::Icon.new("#{iconpath}/invader4.xbm")
+  icon_only icons
+  dynamic true
+end
+
+view "nil" do
+  match 'defualt'
+  icon      Subtlext::Icon.new("#{iconpath}/invader2.xbm")
+  icon_only icons
+  dynamic true
+end
+# 
 # on :view_jump do |v|
 #   views = Hash[*Subtlext::Screen.all.map { |s|
 #     [ s.view.name.to_sym, space[space.keys[s.id]] ] }.flatten
@@ -572,7 +625,19 @@ end
 
 # }}}
 
-# Commands {{{
-def xbmc
-  Subtlext::Subtle.spawn("xinit xbmc -- :#{rand(10)}")
-end # }}}
+on :start do
+  views = Subtlext::View.all.map { |v| v.name }
+  spawn("nitrogen --restore")
+end
+
+on :view_jump do |v|
+  if v.name == 'project'
+    spawn('urxvt -name project')
+  end
+end
+
+on :client_focus do |c|
+  if c.name =~ /irssi/ #&& c.tags.include?('terms')
+    c.tags = ['irc']
+  end 
+end
