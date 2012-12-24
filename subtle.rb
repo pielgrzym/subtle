@@ -13,11 +13,12 @@ require "subtle/subtlext"
 begin
   require "/usr/share/subtle-contrib-hg/launcher.rb"
   require "/usr/share/subtle-contrib-hg/selector.rb"
+  require "/usr/share/subtle-contrib-hg/positioner.rb"
 
-  Subtle::Contrib::Selector.font  = "xft:Envy Code R:pixelsize=28"
+  Subtle::Contrib::Selector.font  = "xft:Droid Sans Mono:pixelsize=18"
   Subtle::Contrib::Launcher.fonts = [
-    "xft:Envy Code R:pixelsize=80",
-    "xft:Envy Code R:pixelsize=13"
+    "xft:Droid Sans Mono:pixelsize=60",
+    "xft:Droid Sans Mono:pixelsize=13"
   ]
 
   Subtle::Contrib::Launcher.browser_screen_num = 0
@@ -57,7 +58,8 @@ end
 style :all do
   padding    2, 6, 2, 6
   background "#1a1a1a"
-  font  "-*-*-medium-*-*-*-14-*-*-*-*-*-*-*"
+  font "xft:Droid Sans Mono:pixelsize=14"
+  # font  "-*-*-medium-*-*-*-14-*-*-*-*-*-*-*"
 end
 
 style :title do
@@ -101,7 +103,7 @@ style :separator do
 end
 
 style :clients do
-  active   "#7c7c72", 2
+  active   "#be0007", 2
   inactive "#494948", 2
   margin   2
 end
@@ -373,6 +375,10 @@ end
 
 grab "W-g" do
   Subtle::Contrib::Selector.run
+end
+
+grab "W-t" do 
+  Subtle::Contrib::Positioner.run
 end
 
 # Scratchpad
