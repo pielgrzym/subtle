@@ -242,9 +242,9 @@ end
 # Windows
 grab modkey + "-B1",      :WindowMove
 grab modkey + "-B3",      :WindowResize
-grab modkey + "-space",     :WindowFloat
+grab modkey + "-S-space",     :WindowFloat
 grab modkey + "-f", :WindowFull
-grab modkey + "-S-s",     :WindowStick
+grab modkey + "-space",     :WindowStick
 grab modkey + "-S-equal", :WindowZaphod
 grab modkey + "-m",       :WindowRaise
 grab modkey + "-n",       :WindowLower
@@ -571,7 +571,7 @@ space = {
 }
 
 view "terms" do
-  match     "terms"
+  match     "terms|default"
   icon      Subtlext::Icon.new("#{iconpath}/cannon.xbm")
   icon_only icons
 end
