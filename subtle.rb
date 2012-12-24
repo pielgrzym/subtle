@@ -208,6 +208,9 @@ grab modkey + "-i",  :ScreenJump2
 grab modkey + "-o",  :ScreenJump1
 grab modkey + "-v",  :ViewJump6
 
+grab modkey + "-S-period", :ViewNext
+grab modkey + "-S-comma", :ViewPrev
+
 grab modkey + "-period" do
   vArr = Subtlext::View[:all];
   cindx = vArr.index(Subtlext::View.current);
@@ -233,7 +236,7 @@ grab modkey + "-comma" do
     end
   end
 end
- 
+
 # Windows
 grab modkey + "-B1",      :WindowMove
 grab modkey + "-B3",      :WindowResize
@@ -313,6 +316,17 @@ grab "XF86AudioLowerVolume", :VolumeLower
 
 # grab modkey + "-m", "mpc current | tr -d '\n' | xclip"
 
+def jump_or_spawn name
+  view = Subtlext::View.first(name)
+  visible = true if Subtlext::View.visible.include? view 
+  if view.clients.empty?
+    view.jump
+    yield
+  else
+    view.clients.first.focus
+  end
+end
+
 # Programs
 grab modkey + "-Return" do
   if Subtlext::View.current.to_s == 'project'
@@ -323,16 +337,8 @@ grab modkey + "-Return" do
 end
 
 grab modkey + "-S-Return" do
-  spawn("urxvt -name project")
-end
-
-def jump_or_spawn name
-  view = Subtlext::View.first(name)
-  if view.clients.empty?
-    view.jump
-    yield
-  else
-    view.jump
+  jump_or_spawn :project do
+    spawn("urxvt -name project")
   end
 end
 
@@ -346,6 +352,13 @@ end
 grab "A-w" do 
   jump_or_spawn :www do 
     c = spawn("firefox")
+    c.focus
+  end
+end
+
+grab "W-F9" do
+  jump_or_spawn :simulacra do 
+    c = spawn("VirtualBox")
     c.focus
   end
 end
@@ -457,6 +470,10 @@ tag "dialogs" do
   match  "sun-awt-X11-XDialogPeer"
   match type: [ :dialog, :splash ]
   stick true
+end
+
+tag "vbox" do 
+  match class: "VirtualBox" 
 end
 
 # tag "one" do
