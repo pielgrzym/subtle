@@ -349,7 +349,7 @@ grab "A-e" do
     c.focus
   end
 end
-grap "A-S-e", "gvim"
+grab "A-S-e", "gvim"
 
 grab "A-w" do 
   jump_or_spawn :www do 
@@ -357,7 +357,6 @@ grab "A-w" do
     c.focus
   end
 end
-grap "A-S-w", "firefox"
 
 grab "W-F9" do
   jump_or_spawn :simulacra do 
