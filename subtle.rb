@@ -400,6 +400,7 @@ end
 # }}}
 
 # Tags {{{
+
 tag "terms" do
   match    instance: "xterm|urxvt", name: '[^irssi]'
   gravity  :center
@@ -593,7 +594,7 @@ view "simulacra" do
 end
 
 view "nil" do
-  match 'defualt'
+  match 'default'
   icon      Subtlext::Icon.new("#{iconpath}/invader2.xbm")
   icon_only icons
   dynamic true
