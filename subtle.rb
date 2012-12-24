@@ -309,6 +309,7 @@ end
 grab "XF86AudioMute",        :VolumeToggle
 grab "XF86AudioRaiseVolume", :VolumeRaise
 grab "XF86AudioLowerVolume", :VolumeLower
+grab "XF86ScreenSaver",      "slock"
 # grab "XF86AudioPlay",        :MpdToggle
 # grab "XF86AudioStop",        :MpdStop
 # grab "XF86AudioNext",        :MpdNext
@@ -348,6 +349,7 @@ grab "A-e" do
     c.focus
   end
 end
+grap "A-S-e", "gvim"
 
 grab "A-w" do 
   jump_or_spawn :www do 
@@ -355,6 +357,7 @@ grab "A-w" do
     c.focus
   end
 end
+grap "A-S-w", "firefox"
 
 grab "W-F9" do
   jump_or_spawn :simulacra do 
