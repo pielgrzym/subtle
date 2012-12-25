@@ -556,71 +556,57 @@ end
 # }}}
 
 icons     = true
-iconpath = "#{ENV["HOME"]}/.local/share/icons"
-
-space = {
-  :cannon  => Subtlext::Icon.new("#{iconpath}/cannon.xbm"),
-  :ufo     => Subtlext::Icon.new("#{iconpath}/ufo.xbm"),
-  :shelter => Subtlext::Icon.new("#{iconpath}/shelter.xbm"),
-  :terms   => Subtlext::Icon.new("#{iconpath}/invader1.xbm"),
-  :www     => Subtlext::Icon.new("#{iconpath}/invader2.xbm"),
-  :void    => Subtlext::Icon.new("#{iconpath}/invader3.xbm"),
-  :sketch  => Subtlext::Icon.new("#{iconpath}/invader4.xbm"),
-  :project => Subtlext::Icon.new("#{iconpath}/invader5.xbm"),
-  :editor  => Subtlext::Icon.new("#{iconpath}/invader6.xbm")
-}
+iconpath = "#{ENV["HOME"]}/.config/subtle/icons"
 
 view "terms" do
   match     "terms|default"
-  icon      Subtlext::Icon.new("#{iconpath}/cannon.xbm")
+  icon      Subtlext::Icon.new("#{iconpath}/Code.xbm")
   icon_only icons
 end
 
 view "www" do
   match     "browser"
-  icon      Subtlext::Icon.new("#{iconpath}/ufo.xbm")
+  icon      Subtlext::Icon.new("#{iconpath}/Globe.xbm")
   icon_only icons
 end
 
 view "project" do
   match     "project"
   dynamic false
-  #icon      "#{iconpath}/bug.xbm"
-  icon      Subtlext::Icon.new("#{iconpath}/invader5.xbm")
+  icon      Subtlext::Icon.new("#{iconpath}/Lab.xbm")
   icon_only icons
 end
 
 view "editor" do
   match     "editor"
-  #icon      "#{iconpath}/ruby.xbm"
-  icon      Subtlext::Icon.new("#{iconpath}/invader6.xbm")
+  icon      Subtlext::Icon.new("#{iconpath}/Lightning.xbm")
   icon_only icons
 end
 
 view "sketch" do
   match     "inkscape|dia_*|gimp_.*"
-  icon      Subtlext::Icon.new("#{iconpath}/invader4.xbm")
+  icon      Subtlext::Icon.new("#{iconpath}/Photo.xbm")
   icon_only icons
   dynamic true
 end
 
 view "irc" do 
   match "irc"
-  icon      Subtlext::Icon.new("#{iconpath}/invader1.xbm")
+  icon      Subtlext::Icon.new("#{iconpath}/Comment.xbm")
   icon_only icons
   dynamic true
 end
 
 view "simulacra" do
   match "vbox"
-  icon      Subtlext::Icon.new("#{iconpath}/invader4.xbm")
+  icon      Subtlext::Icon.new("#{iconpath}/Computer.xbm")
   icon_only icons
   dynamic true
 end
 
 view "nil" do
   match 'default'
-  icon      Subtlext::Icon.new("#{iconpath}/invader2.xbm")
+  icon      Subtlext::Icon.new("#{iconpath}/Cloud.xbm")
   icon_only icons
   dynamic true
 end
