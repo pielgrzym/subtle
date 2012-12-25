@@ -630,21 +630,3 @@ on :client_focus do |c|
     c.tags = ['irc']
   end 
 end
-
-on :view_jump do |v|
-  views = Hash[*Subtlext::Screen.all.map { |s|
-    [ s.view.name.to_sym, space[space.keys[s.id]] ] }.flatten
-  ]
-
-  Subtlext::View.all.each do |va|
-    sym = va.name.to_sym
-
-    if views.keys.include?(sym)
-      va.icon.copy_area(views[sym])
-    else
-      va.icon.copy_area(space[va.name.to_sym])
-    end
-  end
-
-  Subtlext::Subtle.render
-end
