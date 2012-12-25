@@ -32,17 +32,18 @@ set :default_gravity,   :center
 set :urgent_dialogs,    false
 set :honor_size_hints,    false
 set :gravity_tiling,    false
+set :wmname, "LG3D"
 # }}}
 
 # Screens {{{
 screen 1 do
-  top     [:title, :spacer, :center, :views, :center, :cpu, :sublets, :separator, :clock]
+  top     [:title, :spacer, :center, :views, :center, :tray, :cpu, :sublets, :separator, :clock]
   bottom  []
   view    0
 end
 
 screen 2 do
-  top     [:title, :spacer, :tray, :center, :views, :center, :clock]
+  top     [:title, :spacer, :center, :views, :center, :clock]
   bottom  []
   view    5
 end
@@ -360,10 +361,18 @@ grab "A-w" do
   end
 end
 
-grab "W-F9" do
+grab modkey + "-F9" do
   jump_or_spawn :simulacra do 
     c = spawn("VirtualBox")
     c.focus
+  end
+end
+
+grab modkey + "-F10" do
+  if (t = Subtlext::Tray[:pychrom])
+    t.click
+  else
+    Subtlext::Client.spawn("pychrom")
   end
 end
 # grab modkey + "-f", "firefox -no-remote -ProfileManager"
@@ -482,6 +491,12 @@ end
 
 tag "vbox" do 
   match class: "VirtualBox" 
+end
+
+tag "stickandfloat" do
+  match "dialog|subtly|python|gtk.rb|display|pychrom|skype|xev|exe|<unknown>|plugin-container"
+  stick true
+  float true
 end
 
 # tag "one" do
