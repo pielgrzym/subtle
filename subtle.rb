@@ -7,6 +7,7 @@
 #
 
 require "socket"
+host     = Socket.gethostname
 require "subtle/subtlext" 
 
 # Contrib {{{
@@ -184,12 +185,16 @@ gravity :gimp_dock,      [  90,   0,  10, 100 ]
 
 gravity :dia_toolbox,    [   0,   0,  15, 100 ]
 gravity :dia_window,     [  15,   0,  85, 100 ]
-gravity :scratch,        [ 5, 0, 90, 60 ]
+
+if host == 'black'
+  gravity :scratch,        [ 2, 2, 96, 40 ]
+else
+  gravity :scratch,        [ 5, 0, 90, 60 ]
+end
 # }}}
 
 # Grabs {{{
 # Host specific
-host     = Socket.gethostname
 modkey   = "W"
 # gravkeys = [ "KP_7", "KP_8", "KP_9", "KP_4", "KP_5", "KP_6", "KP_1", "KP_2", "KP_3" ]
 # gravkeys = [ "u", "k", "o", 
