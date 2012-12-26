@@ -333,7 +333,7 @@ end
 
 # Programs
 grab modkey + "-Return" do
-  if Subtlext::View.current.to_s == 'project'
+  if Subtlext::View.current.name == 'project'
     spawn("urxvt -name project")
   else
     spawn("urxvt")
@@ -405,7 +405,7 @@ end
 
 # Tabbing
 grab modkey + "-u" do
-  Subtlext::Client.recent.uniq[-1].focus
+  Subtlext::Client.recent[1].focus
 end
 
 # Set layout
