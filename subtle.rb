@@ -212,8 +212,8 @@ gravkeys = [ "q", "w", "e", "a", "s", "d", "z", "x", "c" ]
   grab modkey + "-S-#{i}", "ViewJump#{i}".to_sym
 end
 
-grab modkey + "-i",  :ScreenJump2
-grab modkey + "-o",  :ScreenJump1
+grab modkey + "-i",  :ScreenJump1
+grab modkey + "-o",  :ScreenJump2
 grab modkey + "-v",  :ViewJump6
 
 grab modkey + "-S-period", :ViewNext
