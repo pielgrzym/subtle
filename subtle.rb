@@ -496,6 +496,7 @@ end
 
 tag "vbox" do 
   match class: "VirtualBox" 
+  resize true
 end
 
 tag "stickandfloat" do
