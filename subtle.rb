@@ -186,6 +186,8 @@ gravity :gimp_dock,      [  90,   0,  10, 100 ]
 gravity :dia_toolbox,    [   0,   0,  15, 100 ]
 gravity :dia_window,     [  15,   0,  85, 100 ]
 
+gravity :musicplayer,    [ 30, 60, 65, 35 ]
+
 if host == 'black'
   gravity :scratch,        [ 2, 2, 96, 40 ]
 else
@@ -408,6 +410,17 @@ grab "W-semicolon" do
   end
 end
 
+grab modkey + "-S-m" do
+  if((c = Subtlext::Client["pragha"]))
+    c.toggle_stick
+    c.raise
+    c.focus
+  elsif((jc = spawn("pragha")))
+    c.tags  = [] 
+    c.flags = [ :stick ]
+    c.raise
+  end
+end
 # Tabbing
 grab modkey + "-u" do
   Subtlext::Client.recent[1].focus
@@ -503,6 +516,13 @@ tag "stickandfloat" do
   match "dialog|subtly|python|gtk.rb|display|pychrom|skype|xev|exe|<unknown>|plugin-container"
   stick true
   float true
+end
+
+tag "musicplayer" do
+  match "pragha"
+  gravity :musicplayer
+  urgent true
+  stick true
 end
 
 # tag "one" do
