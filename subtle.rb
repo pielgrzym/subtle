@@ -509,6 +509,7 @@ end
 
 tag "vbox" do 
   match class: "VirtualBox" 
+  gravity :center
   resize true
 end
 
