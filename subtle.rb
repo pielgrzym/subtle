@@ -555,23 +555,12 @@ end
 #   gravity  :top
 # end
 # 
-tag "gimp_image" do
-  match    role: "gimp-image-window"
-  gravity  :gimp_image
-end
+tag "gimp" do
+  match role: "gimp-.*" 
 
-tag "gimp_toolbox" do
-  match    role: "gimp-toolbox$"
-  gravity  :gimp_toolbox
-end
-
-tag "gimp_dock" do
-  match    role: "gimp-dock"
-  gravity  :gimp_dock
-end
-
-tag "gimp_scum" do
-  match role: "gimp-.*|screenshot"
+  on_match do |c|
+    c.gravity = ("gimp_" + c.role.split("-")[1]).to_sym
+  end
 end
 
 tag "dia_window" do
