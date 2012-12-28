@@ -38,7 +38,7 @@ set :wmname, "LG3D"
 
 # Screens {{{
 screen 1 do
-  top     [:title, :spacer, :center, :views, :center, :tray, :cpu, :sublets, :separator, :clock]
+  top     [:title, :spacer, :center, :views, :center, :tray, :cpu, :sublets, :separator, :volume, :separator, :clock]
   bottom  []
   view    0
 end
@@ -614,7 +614,7 @@ view "editor" do
 end
 
 view "sketch" do
-  match     "inkscape|dia_*|gimp_.*"
+  match     "gimp"
   icon      Subtlext::Icon.new("#{iconpath}/Photo.xbm")
   icon_only icons
   dynamic true
