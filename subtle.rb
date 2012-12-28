@@ -473,7 +473,7 @@ end
 
 tag "editor" do
   match  "[g]?vim"
-  # resize true
+  resize true
   gravity :center
 end
 
