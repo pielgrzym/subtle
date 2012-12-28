@@ -320,10 +320,11 @@ grab "XF86AudioMute",        "amixer -c 0 -- sset Master toggle"
 grab "XF86AudioRaiseVolume", "amixer -c 0 -- sset Master 5%+"
 grab "XF86AudioLowerVolume", "amixer -c 0 -- sset Master 5%-"
 grab "XF86ScreenSaver",      "slock"
-# grab "XF86AudioPlay",        :MpdToggle
-# grab "XF86AudioStop",        :MpdStop
-# grab "XF86AudioNext",        :MpdNext
-# grab "XF86AudioPrev",        :MpdPrevious
+grab "XF86AudioPlay",        "pragha -t"
+grab "XF86AudioStop",        "pragha -s"
+grab "XF86AudioNext",        "pragha -n"
+grab "XF86AudioPrev",        "pragha -r"
+grab "XF86Sleep",            "slock"
 
 # grab modkey + "-m", "mpc current | tr -d '\n' | xclip"
 
