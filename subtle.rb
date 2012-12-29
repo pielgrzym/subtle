@@ -474,7 +474,8 @@ end
 
 tag "editor" do
   match  "[g]?vim"
-  resize true
+  # resize true
+  borderless true
   gravity :center
 end
 
@@ -657,8 +658,8 @@ on :start do
   spawn("nitrogen --restore")
 end
 
-on :client_focus do |c|
-  if c.name =~ /irssi/ #&& c.tags.include?('terms')
-    c.tags = ['irc']
-  end 
-end
+# on :client_focus do |c|
+#   if c.name =~ /irssi/ #&& c.tags.include?('terms')
+#     c.tags = ['irc']
+#   end 
+# end
