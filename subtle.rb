@@ -342,15 +342,15 @@ end
 # Programs
 grab modkey + "-Return" do
   if Subtlext::View.current.name == 'project'
-    spawn("urxvt -name project")
+    spawn("urxvtc -name project")
   else
-    spawn("urxvt")
+    spawn("urxvtc")
   end
 end
 
 grab modkey + "-S-Return" do
   jump_or_spawn :project do
-    spawn("urxvt -name project")
+    spawn("urxvtc -name project")
   end
 end
 
@@ -404,8 +404,8 @@ grab "W-semicolon" do
     c.toggle_stick
     c.raise
     c.focus
-  elsif((jc = spawn("urxvtc -name scratch")))
-    c.tags  = [] 
+  elsif((c = spawn("urxvtc -name scratch")))
+    # c.tags  = [] 
     c.flags = [ :stick ]
     c.raise
   end
@@ -416,8 +416,8 @@ grab modkey + "-S-m" do
     c.toggle_stick
     c.raise
     c.focus
-  elsif((jc = spawn("pragha")))
-    c.tags  = [] 
+  elsif((c = spawn("pragha")))
+    # c.tags  = [] 
     c.flags = [ :stick ]
     c.raise
   end
