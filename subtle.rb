@@ -316,9 +316,9 @@ gravities.each_index do |i|
 end
 
 # Multimedia keys
-grab "XF86AudioMute",        "amixer -c 0 -- sset Master toggle"
-grab "XF86AudioRaiseVolume", "amixer -c 0 -- sset Master 5%+"
-grab "XF86AudioLowerVolume", "amixer -c 0 -- sset Master 5%-"
+grab "XF86AudioMute",        "amixer -c 0 -- sset Master toggle; twmnc -c \"`amixer -c 0 get Master | awk '$1 ~ /Mono:/ { print $6 }'`\" -t 'Sound: ' --id 99"
+grab "XF86AudioRaiseVolume", "amixer -c 0 -- sset Master 5%+; twmnc -c \"`amixer -c 0 get Master | grep -oe '[[:digit:]]*%'`\" -t 'Vol. ' --id 99"
+grab "XF86AudioLowerVolume", "amixer -c 0 -- sset Master 5%-; twmnc -c \"`amixer -c 0 get Master | grep -oe '[[:digit:]]*%'`\" -t 'Vol. ' --id 99"
 grab "XF86ScreenSaver",      "slock"
 grab "XF86AudioPlay",        "pragha -t"
 grab "XF86AudioStop",        "pragha -s"
