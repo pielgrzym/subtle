@@ -214,8 +214,13 @@ gravkeys = [ "q", "w", "e", "a", "s", "d", "z", "x", "c" ]
   grab modkey + "-S-#{i}", "ViewJump#{i}".to_sym
 end
 
-grab modkey + "-i",  :ScreenJump1
-grab modkey + "-o",  :ScreenJump2
+if host == "abulafia"
+  grab modkey + "-i",  :ScreenJump1
+  grab modkey + "-o",  :ScreenJump2
+else
+  grab modkey + "-i",  :ScreenJump2
+  grab modkey + "-o",  :ScreenJump1
+end
 grab modkey + "-v",  :ViewJump6
 
 grab modkey + "-S-period", :ViewNext
