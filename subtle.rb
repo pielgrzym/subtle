@@ -44,7 +44,7 @@ screen 1 do
 end
 
 screen 2 do
-  top     [:title, :spacer, :center, :views, :center, :clock]
+  top     [:debt, :spacer, :center, :views, :center, :clock]
   bottom  []
   view    5
 end
@@ -409,7 +409,7 @@ grab "W-semicolon" do
     c.toggle_stick
     c.raise
     c.focus
-  elsif((c = spawn("urxvtc -name scratch")))
+  elsif((c = spawn("urxvtc -name scratch -e /bin/zsh -i -c \"run_or_attach_sys\"")))
     # c.tags  = [] 
     c.flags = [ :stick ]
     c.raise
