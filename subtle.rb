@@ -38,7 +38,7 @@ set :wmname, "LG3D"
 
 # Screens {{{
 screen 1 do
-  top     [:title, :spacer, :center, :views, :center, :tray, :cpu, :sublets, :separator, :volume, :separator, :clock]
+  top     [:title, :spacer, :center, :views, :center, :tray, :cpu, :sublets, :separator, :clock]
   bottom  []
   view    0
 end
