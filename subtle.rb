@@ -388,6 +388,14 @@ grab modkey + "-F10" do
     Subtlext::Client.spawn("pychrom")
   end
 end
+
+grab modkey + "-F11" do
+  jump_or_spawn :irc do
+    c = spawn("urxvtc -name irc -e /bin/zsh -i -c \"wee\"")
+    c.focus
+  end
+end
+
 # grab modkey + "-f", "firefox -no-remote -ProfileManager"
 
 # Contrib
@@ -494,7 +502,7 @@ tag "editor" do
 end
 
 tag "irc" do
-  match name: 'irssi'
+  match "irc"
   gravity :center
 end
 
