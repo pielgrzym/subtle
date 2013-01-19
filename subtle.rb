@@ -16,10 +16,10 @@ begin
   require "/usr/share/subtle-contrib-hg/selector.rb"
   require "/usr/share/subtle-contrib-hg/positioner.rb"
 
-  Subtle::Contrib::Selector.font  = "xft:Droid Sans Mono:pixelsize=18"
+  Subtle::Contrib::Selector.font  = "-*-terminus-*-*-*-*-16-*-*-*-*-*-*-*"
   Subtle::Contrib::Launcher.fonts = [
-    "xft:Droid Sans Mono:pixelsize=60",
-    "xft:Droid Sans Mono:pixelsize=13"
+    "-*-terminus-*-*-*-*-60-*-*-*-*-*-*-*",
+    "-*-terminus-*-*-*-*-12-*-*-*-*-*-*-*"
   ]
 
   Subtle::Contrib::Launcher.browser_screen_num = 0
